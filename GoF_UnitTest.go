@@ -1,10 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
+
+
+type  TestCase struct{
+	testBoard [][] int
+	testReceivedBoard [][] int
+	testExpectedBoard [][]int
+}
 
 func TestGeneration(t *testing.T) {
 
@@ -21,12 +27,12 @@ func TestGeneration(t *testing.T) {
 		{0, 1, 0, 1, 1, 1, 0, 1},
 		{1, 1, 1, 1, 0, 1, 1, 1}}
 
-	testNewBoard := make([][]int, testBoardSize)
-	for i := range testNewBoard {
-		testNewBoard[i] = make([]int, testBoardSize)
+	testReceivedBoard := make([][]int, testBoardSize)
+	for i := range testReceivedBoard {
+		testReceivedBoard[i] = make([]int, testBoardSize)
 	}
 
-	testWantBoard := [][]int{{1, 1, 0, 0, 0, 0, 1, 0},
+	testExpectedBoard := [][]int{{1, 1, 0, 0, 0, 0, 1, 0},
 		{1, 1, 0, 0, 0, 0, 0, 1},
 		{1, 0, 0, 0, 0, 0, 0, 1},
 		{0, 1, 0, 0, 0, 0, 0, 0},
@@ -35,12 +41,18 @@ func TestGeneration(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 0, 0},
 		{1, 1, 0, 1, 0, 1, 0, 1}}
 
-	testNewBoard  = liveOrDeath(testBoard, testNewBoard, x, y, testBoardSize)
+	testCase := TestCase{
+		testBoard: testBoard,
+		testReceivedBoard: testReceivedBoard,
+		testExpectedBoard: testExpectedBoard,
+	}
 
-	result := reflect.DeepEqual(testNewBoard,testWantBoard)
-	fmt.Println(result)
+	testCase.testReceivedBoard  = liveOrDeath(testCase.testBoard, testCase.testReceivedBoard, x, y, testBoardSize)
+
+	result := reflect.DeepEqual(testCase.testReceivedBoard, testCase.testExpectedBoard)
+
 	if result == false {
-		t.Errorf("got %v, wanted %v", testNewBoard, testWantBoard)
+		t.Errorf("got %v, wanted %v", testCase.testReceivedBoard, testCase.testExpectedBoard)
 	}
 }
 
@@ -60,12 +72,12 @@ func TestGame(t *testing.T) {
 		{0, 0, 0, 0, 0, 0, 1, 0},
 	}
 
-	testNewBoard := make([][]int, testBoardSize)
-	for i := range testNewBoard {
-		testNewBoard[i] = make([]int, testBoardSize)
+	testReceivedBoard := make([][]int, testBoardSize)
+	for i := range testReceivedBoard {
+		testReceivedBoard[i] = make([]int, testBoardSize)
 	}
 
-	testWantBoard := [][]int{{0, 0, 0, 0, 0, 0, 0, 0},
+	testExpectedBoard := [][]int{{0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 1, 0, 0},
 	{0, 0, 0, 0, 1, 0, 0, 0},
 	{0, 0, 0, 0, 1, 1, 1, 0},
@@ -74,11 +86,17 @@ func TestGame(t *testing.T) {
 	{0, 0, 0, 0, 0, 1, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0}}
 
-	testNewBoard  = liveOrDeath(testBoard, testNewBoard, x, y, testBoardSize)
+	testCase := TestCase{
+		testBoard: testBoard,
+		testReceivedBoard: testReceivedBoard,
+		testExpectedBoard: testExpectedBoard,
+	}
 
-	result := reflect.DeepEqual(testNewBoard,testWantBoard)
-	fmt.Println(result)
+	testCase.testReceivedBoard  = liveOrDeath(testCase.testBoard, testCase.testReceivedBoard, x, y, testBoardSize)
+
+	result := reflect.DeepEqual(testCase.testReceivedBoard, testCase.testExpectedBoard)
+
 	if result == false {
-		t.Errorf("got %v, wanted %v", testNewBoard, testWantBoard)
+		t.Errorf("got %v, wanted %v", testCase.testReceivedBoard, testCase.testExpectedBoard)
 	}
 }
